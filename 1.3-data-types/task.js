@@ -3,15 +3,17 @@ function calculateTotalMortgage(percent, contribution, amount, date) {
   let percentNumber = parseFloat(percent);
   let contributionNumber = parseFloat(contribution);
   let amountNumber = parseFloat(amount);
-  if (isNaN(percentNumber)) {
+  if  (percent < 0 || (isNaN(percentNumber))) {
           return `Параметр 'Процентная ставка' содержит неправильное значение "${percent}"`;
-      } else if (isNaN(contributionNumber)) {
+      } else if (contribution < 0 || (isNaN(contributionNumber))) {
           return `Параметр 'Сумма первоначального взноса' содержит неправильное значение "${contribution}"`;
-      } else if (isNaN(amountNumber)) {
+      } else if (amount < 0 || (isNaN(amountNumber))) {
           return `Параметр 'Сумма кредита' содержит неправильное значение "${amount}"`;
-      } else {
+      } else if (date < new Date() || (isNaN(date))) {
+        return (`Параметр "Срок ипотеки" содержит неправильное значение: ${date}`);
+    } else {
   let credit = Number(amount) - Number(contribution);
-  let monthNumber = (date.getFullYear() - new Date().getFullYear()) * 12;
+  let monthNumber = (new Date(date).getFullYear() - new Date().getFullYear()) * 12 + new Date(date).getMonth() - new Date().getMonth();
   let P = (1 / 12) * (Number(percent) / 100);
   let payment = credit * (P + P / (Math.pow(1 + P, monthNumber) - 1));
   let totalAmount = payment * monthNumber;
